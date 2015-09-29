@@ -36,10 +36,12 @@ class NonCachingFileHandler < WEBrick::HTTPServlet::FileHandler
   end
 
   def content_type(path)
-    case path.match(%r{\.(\w+)\z})[1]
+    extension = path.split('.').last.downcase
+    case extension 
     when "html" then "text/html"
     when "js" then "text/javascript"
     when "css" then "text/css"
+    when "json" then "application/json"
     else `/usr/bin/file --brief --mime-type #{Shellwords.escape(path)}`.chomp
     end
   end
